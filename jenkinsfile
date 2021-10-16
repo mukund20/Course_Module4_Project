@@ -1,0 +1,33 @@
+pipeline{
+    agent any
+    
+    stages{
+        
+        stage("Clone Code"){
+            steps{
+                git branch: 'main', url: 'https://github.com/mukund20/sample_node_app_project.git'
+            }
+        }
+        
+        stage('Build Code') {
+            steps {
+                dockerImage = docker.build "node_app"
+        
+            }
+        }
+
+        stage('Deploy our image') { 
+            steps { 
+
+                script { 
+
+                    docker.withRegistry( '', registryCredential ) { 
+
+                      dockerImage.push() 
+                    }
+
+                } 
+
+            }
+
+        } 
