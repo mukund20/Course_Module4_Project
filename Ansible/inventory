@@ -1,0 +1,5 @@
+
+[jenkins]
+10.0.1.216 ansible_ssh_private_key_file='terraform-key.pem' ansible_ssh_user=ubuntu
+[app]
+10.0.1.139 ansible_ssh_private_key_file='terraform-key.pem' ansible_ssh_user=ubuntu
