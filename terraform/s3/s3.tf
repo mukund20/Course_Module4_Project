@@ -1,4 +1,4 @@
-terraform {
+terraform { 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -7,7 +7,7 @@ terraform {
   }
   # Adding Backend as S3 for Remote State Storage
   backend "s3" {
-    bucket = "terraform-on-aws-for-ec2"
+    bucket = "terraform-on-aws007"
     key    = "dev/project1-vpc/terraform.tfstate"
     region = "us-east-1" 
    
@@ -16,6 +16,6 @@ terraform {
 
 # Provider Block
 provider "aws" {
-  region  = var.aws_region
+  region  = var.region
   profile = "default"
 }
