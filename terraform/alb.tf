@@ -17,8 +17,9 @@ module "alb" {
       protocol           = "HTTP"
       target_group_index = 0 
     }
-  ]  
+  ] 
 
+  
   target_groups = [
     {
       name_prefix          = "app-tg"
@@ -39,10 +40,10 @@ module "alb" {
         matcher             = "200-399"
       }
       protocol_version = "HTTP1"
-      # jenkins Target Group - Targets
+      # app Target Group - Targets
       targets = {
         app-tg = {
-          target_id = module.ec2_private.id[0]
+          target_id = module.ec2_private_app.id[0]
           port      = 8080
         }
       }
@@ -70,11 +71,56 @@ module "alb" {
       # jenkins Target Group - Targets
       targets = {
         j-tg = {
-          target_id = module.ec2_jenkins.id[0]
+          target_id = module.ec2_private_jenkins.id[0]
           port      = 8080
         },
       }
     }  
+  ]
+
+
+   http_listeners = [
+    # HTTP Listener Index = 0 for HTTP 80
+    {
+      port               = 80
+      protocol           = "HTTP"
+      action_type = "fixed-response"
+      fixed_response = {
+        content_type = "text/plain"
+        message_body = "Welcome to DevOps"
+        status_code  = "200"
+      }
+    }, 
+  ]
+
+   # HTTP Listener Rules
+  http_listener_rules = [
+    # Rule-1: /app* should go to App1 EC2 Instances
+    { 
+      http_listener_index = 0
+      actions = [
+        {
+          type               = "forward"
+          target_group_index = 0
+        }
+      ]
+      conditions = [{
+        path_patterns = ["/app*"]
+      }]
+    },
+    # Rule-2: /jenkins* should go to App2 EC2 Instances    
+    {
+      https_listener_index = 0
+      actions = [
+        {
+          type               = "forward"
+          target_group_index = 1
+        }
+      ]
+      conditions = [{
+        path_patterns = ["/jenkins*"]
+      }]
+    },    
   ]
 
 }
