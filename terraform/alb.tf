@@ -78,49 +78,5 @@ module "alb" {
     }  
   ]
 
-
-   http_listeners = [
-    # HTTP Listener Index = 0 for HTTP 80
-    {
-      port               = 80
-      protocol           = "HTTP"
-      action_type = "fixed-response"
-      fixed_response = {
-        content_type = "text/plain"
-        message_body = "Welcome to DevOps"
-        status_code  = "200"
-      }
-    }, 
-  ]
-
-   # HTTP Listener Rules
-  http_listener_rules = [
-    # Rule-1: /app* should go to App1 EC2 Instances
-    { 
-      http_listener_index = 0
-      actions = [
-        {
-          type               = "forward"
-          target_group_index = 0
-        }
-      ]
-      conditions = [{
-        path_patterns = ["/app*"]
-      }]
-    },
-    # Rule-2: /jenkins* should go to App2 EC2 Instances    
-    {
-      https_listener_index = 0
-      actions = [
-        {
-          type               = "forward"
-          target_group_index = 1
-        }
-      ]
-      conditions = [{
-        path_patterns = ["/jenkins*"]
-      }]
-    },    
-  ]
-
+}
 }
