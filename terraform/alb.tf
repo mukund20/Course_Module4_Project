@@ -15,8 +15,12 @@ module "alb" {
     {
       port               = 80
       protocol           = "HTTP"
-      target_group_index = 0 
-      target_group_index = 1
+      action_type = "fixed-response"
+      fixed_response = {
+        content_type = "text/plain"
+        message_body = "Welcome to devops"
+        status_code  = "200"
+      }
 
     }
   ] 
